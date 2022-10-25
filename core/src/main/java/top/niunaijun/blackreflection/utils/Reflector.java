@@ -62,14 +62,14 @@ public class Reflector {
     }
     
     @SuppressWarnings("unchecked")
-    public <R> R newInstance(Object... initargs) throws Exception {
+    public <R> R newInstance(Object... initargs) throws Throwable {
         if (mConstructor == null) {
             throw new Exception("Constructor was null!");
         }
         try {
             return (R) mConstructor.newInstance(initargs);
         } catch (InvocationTargetException e) {
-            throw new Exception("Oops!", e.getTargetException());
+            throw e.getTargetException();
         } catch (Throwable e) {
             throw new Exception("Oops!", e);
         }
@@ -193,17 +193,17 @@ public class Reflector {
         }
     }
     
-    public <R> R call(Object... args) throws Exception {
+    public <R> R call(Object... args) throws Throwable {
         return callByCaller(mCaller, args);
     }
     
     @SuppressWarnings("unchecked")
-    public <R> R callByCaller(Object caller, Object... args) throws Exception {
+    public <R> R callByCaller(Object caller, Object... args) throws Throwable {
         check(caller, mMethod, "Method");
         try {
             return (R) mMethod.invoke(caller, args);
         } catch (InvocationTargetException e) {
-            throw new Exception("Oops!", e.getTargetException());
+            throw e.getTargetException();
         } catch (Throwable e) {
             throw new Exception("Oops!", e);
         }
